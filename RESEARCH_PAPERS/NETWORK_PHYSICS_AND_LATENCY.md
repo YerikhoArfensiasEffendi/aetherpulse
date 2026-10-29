@@ -1,6 +1,6 @@
 # Analisis Fisika Jaringan dan Batas Teoretis Latensi Antarbenua
 
-Penulis: Divisi Riset Sistem Jaringan BridgePlay  
+Penulis: Divisi Riset Sistem Jaringan AetherPulse  
 Target Sistem: Android OS dan Jaringan Seluler serta Nirkabel  
 Klasifikasi Dokumen: Dokumen Teknis Terbuka  
 
@@ -39,9 +39,9 @@ Artinya, kecepatan sinyal di dalam kabel internet hanyalah sekitar 68 persen dar
 
 t = 1.000 km / 204.190 km per detik = 4.897 milidetik per 1.000 km
 
-Untuk transmisi bolak balik atau Round Trip Time (RTT), setiap jarak 1.000 kilometer membutuhkan waktu minimal:
+Untuk transmisi bolak-balik atau Round Trip Time (RTT), setiap jarak 1.000 kilometer membutuhkan waktu minimal:
 
-RTT murni = 4.897 milidetik x 2 = 9.794 milidetik (dibulatkan menjadi 9.8 milidetik per 1.000 km jarak fisik kabel)
+RTT murni = 4.897 milidetik × 2 = 9.794 milidetik (dibulatkan menjadi 9.8 milidetik per 1.000 km jarak fisik kabel)
 
 ### 1.2 Geodesi vs Topologi Riil Rute Kabel Bawah Laut Jakarta ke Helsinki
 
@@ -51,7 +51,7 @@ Jarak Geodesik = 10.245 kilometer
 
 Jika data dapat menembus inti bumi secara lurus di ruang hampa, RTT teoritis minimum adalah 68.3 milidetik. Namun, kabel serat optik bawah laut tidak pernah dipasang dalam garis lurus menembus daratan benua secara bebas. Kabel harus mengikuti rute maritim resmi, menghindari palung tektonik berbahaya, melewati selat sempit internasional, dan masuk ke stasiun pendaratan kabel (cable landing stations).
 
-Rute kabel fisik aktual yang menghubungkan Jakarta ke Eropa Utara melewati sistem konsorsium kabel bawah laut seperti SEA ME WE 3, SEA ME WE 5, AAE 1, dan jalur darat transit Eropa:
+Rute kabel fisik aktual yang menghubungkan Jakarta ke Eropa Utara melewati sistem konsorsium kabel bawah laut seperti SEA-ME-WE 3, SEA-ME-WE 5, AAE-1, dan jalur darat transit Eropa:
 1. Jakarta ke Singapura melalui Kabel B2JS atau Matrix: 1.150 km
 2. Singapura melintasi Selat Malaka, Samudera Hindia, Laut Merah hingga Teluk Suez (Mesir): 8.400 km
 3. Transit darat Mesir dari Zafarana ke Alexandria: 350 km
@@ -63,21 +63,23 @@ Total panjang kabel fisik riil yang ditempuh data:
 
 Panjang Kabel Akumulatif = 15.900 kilometer
 
+![Peta Topologi Rute Kabel Bawah Laut](../docs/assets/cable_route_map.svg)
+
 ### 1.3 Pembuktian Batas Minimum Latensi Antarbenua
 
 Dengan panjang rute fisik 15.900 kilometer, batas bawah RTT transmisi optik murni adalah:
 
-RTT optik = (15.900 km / 204.190 km per detik) x 2 = 155.73 milidetik
+RTT optik = (15.900 km / 204.190 km per detik) × 2 = 155.73 milidetik
 
 Selain waktu perambatan optik murni, terdapat penundaan pemrosesan perangkat keras (hardware processing delay) yang tidak dapat dihindari:
 * Erbium Doped Fiber Amplifiers (EDFA) dan pengulang optik (optical repeaters) setiap 60 hingga 80 km.
 * Transponder Optical Transport Network (OTN) dan Regenerator Sinyal.
 * Konversi Fotonik ke Elektronik di stasiun router perbatasan BGP Autonomous System (AS).
-* Penundaan antrean pada sekitar 15 hingga 25 hop router antarnegara (rata rata 0.8 milidetik per hop router).
+* Penundaan antrean pada sekitar 15 hingga 25 hop router antarnegara (rata-rata 0.8 milidetik per hop router).
 
 Penambahan jeda pemrosesan perangkat keras dan perutean:
 
-Penundaan Peralatan Tambahan = 20 hop x 0.8 milidetik x 2 = 32 milidetik
+Penundaan Peralatan Tambahan = 20 hop × 0.8 milidetik × 2 = 32 milidetik
 
 Maka, batas latensi absolut yang mungkin dicapai dari Jakarta ke Helsinki adalah:
 
@@ -106,9 +108,9 @@ Keterangan variabel:
 
 ### 2.2 Komparasi Skala Matematis: D prop vs D trans
 
-Karakteristik paket data real time game seluler seperti Mobile Legends:
+Karakteristik paket data real-time game seluler seperti Mobile Legends:
 * Protokol: UDP (User Datagram Protocol)
-* Ukuran muatan rata rata (Payload Size): 64 byte hingga 128 byte
+* Ukuran muatan rata-rata (Payload Size): 64 byte hingga 128 byte
 * Ukuran paket lengkap termasuk IP Header (20 byte) dan UDP Header (8 byte): 156 byte (1.248 bit)
 
 Mari kita hitung D trans pada koneksi internet rumahan standar dengan kecepatan unduh dan unggah sebesar 20 Mbps (20.000.000 bit per detik):
@@ -125,7 +127,7 @@ Selisih Penghematan = 0.062 milidetik dikurangi 0.031 milidetik = 0.031 milideti
 
 Sekarang bandingkan penghematan 0.031 milidetik ini dengan D prop antarbenua yang bernilai 187.73 milidetik:
 
-Persentase Pengaruh Kompresi = (0.031 milidetik / 187.73 milidetik) x 100 persen = 0.0165 persen
+Persentase Pengaruh Kompresi = (0.031 milidetik / 187.73 milidetik) × 100 persen = 0.0165 persen
 
 Kesimpulan Ilmiah Kedua:  
 Mengompresi atau memperkecil paket game hanya menghasilkan efisiensi waktu sebesar 0.03 milidetik. Pada layar tampilan game, nilai ini sama sekali tidak terasa dan tidak akan mengubah angka ping (misalnya dari 200 milidetik menjadi 199.97 milidetik). Pengurangan ukuran paket bermanfaat untuk menghemat kuota data, namun tidak memiliki pengaruh nyata terhadap pengurangan latensi jarak jauh.
@@ -138,9 +140,9 @@ Jika jarak fisik menentukan latensi dasar sebesar 190 milidetik, mengapa seorang
 
 Penyebab utamanya bukan kabel bawah laut itu sendiri, melainkan tiga fenomena kegagalan berikut:
 
-### 3.1 Kontensi Nirkabel Wi Fi (CSMA CA Half Duplex)
+### 3.1 Kontensi Nirkabel Wi-Fi (CSMA CA Half Duplex)
 
-Wi Fi (IEEE 802.11) beroperasi dengan prinsip Carrier Sense Multiple Access with Collision Avoidance (CSMA CA). Berbeda dengan kabel LAN Ethernet yang bersifat Full Duplex (bisa mengirim dan menerima secara bersamaan), Wi Fi bersifat Half Duplex.
+Wi-Fi (IEEE 802.11) beroperasi dengan prinsip Carrier Sense Multiple Access with Collision Avoidance (CSMA CA). Berbeda dengan kabel LAN Ethernet yang bersifat Full Duplex (bisa mengirim dan menerima secara bersamaan), Wi-Fi bersifat Half Duplex.
 * Pada frekuensi 2.4 GHz atau 5 GHz, hanya satu perangkat yang dapat melakukan transmisi radio pada saat bersamaan dalam satu kanal radio.
 * Jika ponsel pintar Samsung A53 sedang mengirim paket input analog gerak hero, sementara perangkat lain di rumah (misalnya Smart TV atau ponsel lain) sedang menerima frame video, ponsel harus menunggu (backoff timer).
 * Jika terjadi interferensi gelombang mikro atau tabrakan sinyal udara, paket UDP akan hilang (drop) di udara. Protokol UDP tidak memiliki mekanisme pengiriman ulang bawaan. Akibatnya, server game kehilangan update posisi dan karakter game mengalami patah gerak (teleporting atau freeze).
@@ -151,15 +153,15 @@ Bufferbloat adalah kondisi ketika antrean memori sementara pada router jaringan 
 * Paket game UDP berukuran 128 byte terjebak di belakang paket TCP berukuran 1.500 byte (MTU maksimum).
 * Waktu tunggu dalam antrean router (D queue) dapat bertambah dari 2 milidetik menjadi 300 milidetik secara mendadak. Inilah yang menyebabkan lonjakan ping merah lokal.
 
-### 3.3 Fluktuasi Hemat Daya Radio Seluler dan Wi Fi (Power Save Polling)
+### 3.3 Fluktuasi Hemat Daya Radio Seluler dan Wi-Fi (Power Save Polling)
 
 Sistem operasi seluler modern (termasuk Samsung One UI berbasis Android) mengaktifkan mode hemat daya radio secara agresif:
-* Modul Wi Fi pada chipset ponsel mematikan sirkuit penerima gelombang mikro selama beberapa milidetik di antara interval suar (DTIM Beacon Interval).
+* Modul Wi-Fi pada chipset ponsel mematikan sirkuit penerima gelombang mikro selama beberapa milidetik di antara interval suar (DTIM Beacon Interval).
 * Proses ini menyebabkan paket data game yang datang dari server tertahan di modul radio sebelum diserahkan ke CPU ponsel, memicu variasi jeda (jitter) berkisar antara 20 hingga 80 milidetik.
 
 ---
 
-## 4. Solusi Rekayasa yang Valid: Arsitektur BridgePlay
+## 4. Solusi Rekayasa yang Valid: Arsitektur AetherPulse
 
 Berdasarkan analisis ilmiah di atas, arsitektur stabilisator jaringan yang benar dan efektif harus berfokus pada:
 1. Menghilangkan variasi jeda (jitter) lokal hingga mendekati nol.
@@ -167,7 +169,7 @@ Berdasarkan analisis ilmiah di atas, arsitektur stabilisator jaringan yang benar
 3. Memberikan jalur prioritas udara tertinggi pada modul radio perangkat keras ponsel.
 
 Arsitektur sistem ini diwujudkan melalui empat pilar rekayasa:
-* Pilar Pertama: Multipath WAN Packet Duplication (Mengirimkan paket duplikat secara paralel melalui Wi Fi dan Seluler 4G/5G secara serentak).
+* Pilar Pertama: Multipath WAN Packet Duplication (Mengirimkan paket duplikat secara paralel melalui Wi-Fi dan Seluler 4G/5G secara serentak).
 * Pilar Kedua: Forward Error Correction (FEC) berbasis XOR sliding window untuk merekonstruksi paket hilang secara instan.
 * Pilar Ketiga: DSCP Voice Queue Prioritization (Penandaan paket dengan kelas Expedited Forwarding untuk melewati antrean bufferbloat).
 * Pilar Keempat: Edge Relay Tunnel di Finlandia untuk memotong jalur BGP publik yang tidak efisien.

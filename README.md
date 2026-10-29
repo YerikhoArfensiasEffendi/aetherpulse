@@ -1,6 +1,6 @@
-# BridgePlay: Penstabil Jaringan Seluler dan Nirkabel Jalur Ganda
+# AetherPulse: Penstabil Jaringan Seluler dan Nirkabel Jalur Ganda
 
-Proyek riset terbuka, spesifikasi arsitektur protokol, dan implementasi penstabil koneksi game seluler real time (Mobile Legends) untuk perangkat Android Samsung Galaxy A53 dan peladen perantara tepi di kawasan Eropa Utara (Helsinki, Finlandia).
+Proyek riset terbuka, spesifikasi arsitektur protokol, dan implementasi penstabil koneksi game seluler real-time (Mobile Legends) untuk perangkat Android Samsung Galaxy A53 dan peladen perantara tepi di kawasan Eropa Utara (Helsinki, Finlandia).
 
 ---
 
@@ -9,22 +9,28 @@ Proyek riset terbuka, spesifikasi arsitektur protokol, dan implementasi penstabi
 Sebelum mengimplementasikan proyek ini, sangat penting memahami hukum fisika jaringan yang tidak dapat dilanggar oleh algoritma perangkat lunak apa pun:
 
 1. Ketergantungan Mutlak pada Kabel Bawah Laut  
-Data digital dari Indonesia menuju Eropa tidak dapat dipindahkan secara instan tanpa melewati media fisik. Jarak kabel serat optik bawah laut dari Jakarta ke Helsinki adalah sekitar 15.900 kilometer. Kecepatan cahaya dalam kaca silika serat optik adalah 204.190 kilometer per detik. Oleh karena itu, batas waktu bolak balik (Round Trip Time atau RTT) fisik murni berada pada kisaran 160 milidetik hingga 210 milidetik. Tidak ada aplikasi yang bisa menurunkan angka latensi dasar ini menjadi hijau rendah (seperti 20 milidetik lokal) karena batasan hukum perambatan elektromagnetik.
+Data digital dari Indonesia menuju Eropa tidak dapat dipindahkan secara instan tanpa melewati media fisik. Jarak kabel serat optik bawah laut dari Jakarta ke Helsinki adalah sekitar 15.900 kilometer. Kecepatan cahaya dalam kaca silika serat optik adalah 204.190 kilometer per detik. Oleh karena itu, batas waktu bolak-balik (Round Trip Time atau RTT) fisik murni berada pada kisaran 160 milidetik hingga 210 milidetik. Tidak ada aplikasi yang bisa menurunkan angka latensi dasar ini menjadi hijau rendah (seperti 20 milidetik lokal) karena batasan hukum perambatan elektromagnetik.
+
+![Peta Topologi Rute Kabel Bawah Laut](docs/assets/cable_route_map.svg)
 
 2. Pengaruh Ukuran Paket Data terhadap Latensi  
 Memperkecil ukuran paket game (misalnya dari 156 byte menjadi 78 byte) hanya menghemat waktu transmisi sebesar 0.03 milidetik pada koneksi broadband 20 Mbps standar. Penghematan 0.03 milidetik sama sekali tidak berpengaruh pada total latensi 190 milidetik. Pengurangan ukuran data bertujuan menghemat kuota, bukan menurunkan nilai milidetik ping.
 
-3. Apa yang Sebenarnya Diselesaikan oleh BridgePlay  
-Meskipun latensi dasar tidak dapat diturunkan di bawah 160 milidetik, BridgePlay memecahkan masalah utama yang dihadapi pemain game:
+3. Apa yang Sebenarnya Diselesaikan oleh AetherPulse  
+Meskipun latensi dasar tidak dapat diturunkan di bawah 160 milidetik, AetherPulse memecahkan masalah utama yang dihadapi pemain game:
 * Menghilangkan variasi jeda (jitter) sehingga ping stabil konstan pada angka terendah tanpa lonjakan mendadak ke 400 milidetik atau 900 milidetik.
 * Mencegah hilangnya paket (packet loss) di udara dengan mengirimkan salinan data ganda secara paralel melalui Wi-Fi dan jaringan 4G/5G secara serentak.
 * Melompati antrean kemacetan router rumahan (bufferbloat) menggunakan penandaan prioritas Wi-Fi Voice Queue (DSCP Expedited Forwarding).
+
+![Grafik Telemetri Latensi dan Kestabilan](docs/assets/latency_stability_chart.svg)
 
 ---
 
 ## Arsitektur Sistem
 
-Sistem BridgePlay terbagi menjadi dua komponen utama:
+![Diagram Alur Arsitektur AetherPulse](docs/assets/multipath_architecture_flowchart.svg)
+
+Sistem AetherPulse terbagi menjadi dua komponen utama:
 
 ### 1. Klien Android (Samsung Galaxy A53)
 * Berjalan sebagai layanan latar belakang Android VpnService.
@@ -40,14 +46,32 @@ Sistem BridgePlay terbagi menjadi dua komponen utama:
 
 ---
 
+## Integrasi Peer to Peer dan DePIN Blockchain
+
+![Diagram Alur DePIN dan Pembayaran Mikro](docs/assets/depin_settlement_flowchart.svg)
+
+Melalui pemanfaatan arsitektur terdesentralisasi, AetherPulse dapat dioperasikan tanpa ketergantungan pada entitas perusahaan VPN komersial terpusat:
+1. Pasar Kuota Game Mikro (Pay-per-Match): Menggunakan kanal pembayaran mikro off-chain sehingga pemain hanya membayar biaya sekitar Rp 50 per pertandingan (~25 MB) tanpa biaya langganan bulanan.
+2. Bukti Kualitas Latensi Kriptografis (Proof of Latency): Node relai diverifikasi secara independen. Jika server mengalami lonjakan ping di atas SLA yang disepakati, saldo jaminan (staking) pemilik server dipotong secara otomatis.
+3. Tahan Sensor dan CGNAT Bypass: Kademlia DHT memfasilitasi pembukaan lubang NAT (UDP Hole Punching) tanpa memerlukan server STUN/TURN terpusat.
+
+---
+
 ## Struktur Direktori Repositori
 
 ```
-Brigeplay/
+aetherpulse/
 ├── README.md
+├── docs/
+│   └── assets/
+│       ├── cable_route_map.svg
+│       ├── multipath_architecture_flowchart.svg
+│       ├── latency_stability_chart.svg
+│       └── depin_settlement_flowchart.svg
 ├── RESEARCH_PAPERS/
 │   ├── NETWORK_PHYSICS_AND_LATENCY.md
-│   └── ARCHITECTURE_SPECIFICATION.md
+│   ├── ARCHITECTURE_SPECIFICATION.md
+│   └── BLOCKCHAIN_P2P_DEPIN_ANALYSIS.md
 ├── server/
 │   ├── go/
 │   │   ├── cmd/server/main.go
@@ -108,10 +132,10 @@ docker compose up -d
 
 ### Bagian B: Menjalankan Aplikasi di Samsung Galaxy A53
 
-1. Buka folder `android/` pada Android Studio Hedgehog atau versi yang lebih baru.
+1. Buka folder android/ pada Android Studio.
 2. Hubungkan Samsung Galaxy A53 menggunakan kabel data USB dan aktifkan USB Debugging.
 3. Lakukan build dan instalasi aplikasi ke ponsel.
-4. Buka aplikasi BridgePlay Stabilizer:
+4. Buka aplikasi AetherPulse Stabilizer:
    * Masukkan alamat IP publik VPS Finlandia tempat peladen dijalankan.
    * Masukkan port 8910.
    * Tekan tombol "Aktifkan Penstabil Jaringan".
@@ -123,9 +147,10 @@ docker compose up -d
 
 ## Riset Ilmiah Mendalam
 
-Laporan teknis lengkap dan analisis matematis dapat dibaca langsung pada folder `RESEARCH_PAPERS`:
-1. `RESEARCH_PAPERS/NETWORK_PHYSICS_AND_LATENCY.md`: Pembuktian matematis kecepatan rambat serat optik dan dekonstruksi penundaan transmisi.
-2. `RESEARCH_PAPERS/ARCHITECTURE_SPECIFICATION.md`: Spesifikasi detail protokol Multipath Packet Duplication, Forward Error Correction, dan mitigasi WMM.
+Laporan teknis lengkap dan analisis matematis dapat dibaca langsung pada folder RESEARCH_PAPERS:
+1. RESEARCH_PAPERS/NETWORK_PHYSICS_AND_LATENCY.md: Pembuktian matematis kecepatan rambat serat optik dan dekonstruksi penundaan transmisi.
+2. RESEARCH_PAPERS/ARCHITECTURE_SPECIFICATION.md: Spesifikasi detail protokol Multipath Packet Duplication, Forward Error Correction, dan mitigasi WMM.
+3. RESEARCH_PAPERS/BLOCKCHAIN_P2P_DEPIN_ANALYSIS.md: Analisis arsitektur DePIN, Kademlia DHT, dan pembayaran mikro game off-chain.
 
 ---
 

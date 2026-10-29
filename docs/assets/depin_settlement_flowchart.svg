@@ -1,0 +1,124 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 650" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgGrad4" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0B0F19"/>
+      <stop offset="100%" stop-color="#111827"/>
+    </linearGradient>
+    <marker id="arrowPurple" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#A855F7" />
+    </marker>
+    <marker id="arrowGreen" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#10B981" />
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="650" rx="16" fill="url(#bgGrad4)"/>
+  <rect x="1" y="1" width="1198" height="648" rx="15" fill="none" stroke="#1F2937" stroke-width="2"/>
+
+  <!-- Title -->
+  <text x="50" y="50" fill="#F9FAFB" font-family="system-ui, -apple-system, sans-serif" font-size="22" font-weight="700">Arsitektur DePIN dan Pembayaran Mikro Game Off-Chain</text>
+  <text x="50" y="75" fill="#9CA3AF" font-family="system-ui, -apple-system, sans-serif" font-size="14">Sistem pembayaran mikro per pertandingan (Pay-per-Match) dan verifikasi Proof of Latency tanpa langganan</text>
+
+  <!-- Stage 1: Client Node -->
+  <rect x="50" y="120" width="230" height="320" rx="12" fill="#1E293B" stroke="#38BDF8" stroke-width="1.5"/>
+  <text x="165" y="150" fill="#FFFFFF" font-family="sans-serif" font-size="14" font-weight="700" text-anchor="middle">1. Ponsel Gamer (Klien)</text>
+  
+  <rect x="65" y="175" width="200" height="65" rx="8" fill="#0F172A"/>
+  <text x="165" y="198" fill="#38BDF8" font-family="sans-serif" font-size="12" font-weight="700" text-anchor="middle">Sesi Game Aktif</text>
+  <text x="165" y="218" fill="#94A3B8" font-family="sans-serif" font-size="11" text-anchor="middle">1 Match = ~25 MB Data</text>
+  <text x="165" y="232" fill="#64748B" font-family="sans-serif" font-size="10" text-anchor="middle">Mobile Legends UDP</text>
+
+  <rect x="65" y="255" width="200" height="85" rx="8" fill="#0F172A"/>
+  <text x="165" y="278" fill="#A855F7" font-family="sans-serif" font-size="12" font-weight="700" text-anchor="middle">State Channel Signer</text>
+  <text x="165" y="298" fill="#94A3B8" font-family="sans-serif" font-size="11" text-anchor="middle">Tanda Tangan Tiket Mikro</text>
+  <text x="165" y="315" fill="#C084FC" font-family="sans-serif" font-size="11" text-anchor="middle">Rp 50 per Pertandingan</text>
+  <text x="165" y="330" fill="#64748B" font-family="sans-serif" font-size="10" text-anchor="middle">Zero Gas Fee (Off-chain)</text>
+
+  <rect x="65" y="355" width="200" height="65" rx="8" fill="#0F172A"/>
+  <text x="165" y="378" fill="#10B981" font-family="sans-serif" font-size="12" font-weight="700" text-anchor="middle">Audit Ping Lokal</text>
+  <text x="165" y="398" fill="#94A3B8" font-family="sans-serif" font-size="11" text-anchor="middle">Evaluasi Latensi &lt; 190 ms</text>
+
+  <!-- Arrow 1 to 2 -->
+  <line x1="280" y1="280" x2="350" y2="280" stroke="#A855F7" stroke-width="2.5" marker-end="url(#arrowPurple)"/>
+  <text x="315" y="270" fill="#C084FC" font-family="sans-serif" font-size="10" text-anchor="middle">Tiket Mikro</text>
+
+  <!-- Stage 2: DePIN Edge Relays -->
+  <rect x="350" y="120" width="250" height="320" rx="12" fill="#1E293B" stroke="#A855F7" stroke-width="1.5"/>
+  <text x="475" y="150" fill="#FFFFFF" font-family="sans-serif" font-size="14" font-weight="700" text-anchor="middle">2. Simpul Komunitas Relai</text>
+
+  <rect x="365" y="175" width="220" height="65" rx="8" fill="#0F172A"/>
+  <text x="475" y="198" fill="#F472B6" font-family="sans-serif" font-size="12" font-weight="700" text-anchor="middle">Simpul Edge Helsinki</text>
+  <text x="475" y="218" fill="#94A3B8" font-family="sans-serif" font-size="11" text-anchor="middle">Server Fiber Peering Cepat</text>
+  <text x="475" y="232" fill="#64748B" font-family="sans-serif" font-size="10" text-anchor="middle">Dikelola Pengguna / Komunitas</text>
+
+  <rect x="365" y="255" width="220" height="65" rx="8" fill="#0F172A"/>
+  <text x="475" y="278" fill="#A855F7" font-family="sans-serif" font-size="12" font-weight="700" text-anchor="middle">Staking Jaminan Koin</text>
+  <text x="475" y="298" fill="#94A3B8" font-family="sans-serif" font-size="11" text-anchor="middle">Deposit Kripto Pengelola</text>
+  <text x="475" y="312" fill="#E2E8F0" font-family="sans-serif" font-size="10" text-anchor="middle">Jaminan Bebas Packet Drop</text>
+
+  <rect x="365" y="335" width="220" height="85" rx="8" fill="#0F172A"/>
+  <text x="475" y="358" fill="#38BDF8" font-family="sans-serif" font-size="12" font-weight="700" text-anchor="middle">Akumulasi Penghasilan</text>
+  <text x="475" y="378" fill="#94A3B8" font-family="sans-serif" font-size="11" text-anchor="middle">Mengumpulkan Ribuan Tiket</text>
+  <text x="475" y="395" fill="#34D399" font-family="sans-serif" font-size="11" text-anchor="middle">Klaim Otomatis Harian</text>
+
+  <!-- Arrow 2 to 3 -->
+  <line x1="600" y1="280" x2="670" y2="280" stroke="#10B981" stroke-width="2.5" marker-end="url(#arrowGreen)"/>
+  <text x="635" y="270" fill="#34D399" font-family="sans-serif" font-size="10" text-anchor="middle">Klaim Dana</text>
+
+  <!-- Stage 3: Proof of Latency & SLA -->
+  <rect x="670" y="120" width="230" height="320" rx="12" fill="#1E293B" stroke="#10B981" stroke-width="1.5"/>
+  <text x="785" y="150" fill="#FFFFFF" font-family="sans-serif" font-size="14" font-weight="700" text-anchor="middle">3. Validasi Proof of Latency</text>
+
+  <rect x="685" y="175" width="200" height="65" rx="8" fill="#0F172A"/>
+  <text x="785" y="198" fill="#34D399" font-family="sans-serif" font-size="12" font-weight="700" text-anchor="middle">Stempel Waktu Kripto</text>
+  <text x="785" y="218" fill="#94A3B8" font-family="sans-serif" font-size="11" text-anchor="middle">Presisi Mikrodetik TEE</text>
+  <text x="785" y="232" fill="#64748B" font-family="sans-serif" font-size="10" text-anchor="middle">Tidak Dapat Dipalsukan</text>
+
+  <rect x="685" y="255" width="200" height="65" rx="8" fill="#0F172A"/>
+  <text x="785" y="278" fill="#FBBF24" font-family="sans-serif" font-size="12" font-weight="700" text-anchor="middle">Evaluasi SLA Otomatis</text>
+  <text x="785" y="298" fill="#94A3B8" font-family="sans-serif" font-size="11" text-anchor="middle">Ping Stabil &lt; 190 ms? Lulus</text>
+  <text x="785" y="312" fill="#EF4444" font-family="sans-serif" font-size="10" text-anchor="middle">Ping Drop &gt; 350 ms? Potong Dana</text>
+
+  <rect x="685" y="335" width="200" height="85" rx="8" fill="#0F172A"/>
+  <text x="785" y="358" fill="#60A5FA" font-family="sans-serif" font-size="12" font-weight="700" text-anchor="middle">Pembaruan Skor Kademlia</text>
+  <text x="785" y="378" fill="#94A3B8" font-family="sans-serif" font-size="11" text-anchor="middle">Skor Reputasi Global DHT</text>
+  <text x="785" y="395" fill="#93C5FD" font-family="sans-serif" font-size="10" text-anchor="middle">Node Tercepat Dipilih Otomatis</text>
+
+  <!-- Arrow 3 to 4 -->
+  <line x1="900" y1="280" x2="970" y2="280" stroke="#F59E0B" stroke-width="2.5" marker-end="url(#arrowGreen)"/>
+  <text x="935" y="270" fill="#FBBF24" font-family="sans-serif" font-size="10" text-anchor="middle">Pencairan</text>
+
+  <!-- Stage 4: On-Chain Settlement -->
+  <rect x="970" y="120" width="180" height="320" rx="12" fill="#1E293B" stroke="#F59E0B" stroke-width="1.5"/>
+  <text x="1060" y="150" fill="#FFFFFF" font-family="sans-serif" font-size="14" font-weight="700" text-anchor="middle">4. Smart Contract</text>
+
+  <rect x="980" y="175" width="160" height="75" rx="8" fill="#0F172A"/>
+  <text x="1060" y="198" fill="#FBBF24" font-family="sans-serif" font-size="12" font-weight="700" text-anchor="middle">Settlement On-Chain</text>
+  <text x="1060" y="218" fill="#94A3B8" font-family="sans-serif" font-size="11" text-anchor="middle">Kompensasi Dana</text>
+  <text x="1060" y="235" fill="#34D399" font-family="sans-serif" font-size="10" text-anchor="middle">Langsung ke Dompet</text>
+
+  <rect x="980" y="265" width="160" height="75" rx="8" fill="#0F172A"/>
+  <text x="1060" y="288" fill="#EF4444" font-family="sans-serif" font-size="12" font-weight="700" text-anchor="middle">Slashing Penalti</text>
+  <text x="1060" y="308" fill="#94A3B8" font-family="sans-serif" font-size="11" text-anchor="middle">Jika Terjadi Lag</text>
+  <text x="1060" y="325" fill="#F87171" font-family="sans-serif" font-size="10" text-anchor="middle">Saldo Disita ke Klien</text>
+
+  <rect x="980" y="355" width="160" height="65" rx="8" fill="#0F172A"/>
+  <text x="1060" y="378" fill="#38BDF8" font-family="sans-serif" font-size="12" font-weight="700" text-anchor="middle">Kas DAO Komunitas</text>
+  <text x="1060" y="398" fill="#94A3B8" font-family="sans-serif" font-size="11" text-anchor="middle">Pendanaan Server Baru</text>
+
+  <!-- Bottom Explanatory Banner -->
+  <g transform="translate(50, 480)">
+    <rect width="1100" height="130" rx="8" fill="#131D31" stroke="#334155"/>
+    <text x="25" y="35" fill="#FFFFFF" font-family="sans-serif" font-size="14" font-weight="700">Keunggulan Ekosistem DePIN Dibanding VPN Konvensional</text>
+    <text x="25" y="65" fill="#94A3B8" font-family="sans-serif" font-size="12">
+      1. Efisiensi Biaya: Pemain tidak terikat langganan bulanan mahal. Cukup bayar Rp 50 per sesi game aktif.
+    </text>
+    <text x="25" y="90" fill="#94A3B8" font-family="sans-serif" font-size="12">
+      2. Akuntabilitas Kriptografis: Pemilik server tidak bisa curang. Jika kualitas jaringan drop, jaminan mereka disita oleh smart contract.
+    </text>
+    <text x="25" y="115" fill="#94A3B8" font-family="sans-serif" font-size="12">
+      3. Tahan Sensor: Kademlia DHT mendistribusikan ribuan titik relai tanpa ada satu titik server pusat yang rentan pemblokiran.
+    </text>
+  </g>
+</svg>

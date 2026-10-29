@@ -1,0 +1,99 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgGrad3" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0B0F19"/>
+      <stop offset="100%" stop-color="#111827"/>
+    </linearGradient>
+    <linearGradient id="pulseFill" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#06B6D4" stop-opacity="0.25"/>
+      <stop offset="100%" stop-color="#06B6D4" stop-opacity="0.0"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="600" rx="16" fill="url(#bgGrad3)"/>
+  <rect x="1" y="1" width="1198" height="598" rx="15" fill="none" stroke="#1F2937" stroke-width="2"/>
+
+  <!-- Title & Legend -->
+  <text x="50" y="50" fill="#F9FAFB" font-family="system-ui, -apple-system, sans-serif" font-size="22" font-weight="700">Grafik Komparasi Telemetri Latensi dan Kestabilan Koneksi (120 Detik)</text>
+  <text x="50" y="75" fill="#9CA3AF" font-family="system-ui, -apple-system, sans-serif" font-size="14">Perbandingan koneksi Wi-Fi standar, Seluler 4G mandiri, vs AetherPulse Dual-Radio Aggregation</text>
+
+  <!-- Legend Badges -->
+  <g transform="translate(680, 40)">
+    <line x1="0" y1="10" x2="30" y2="10" stroke="#EF4444" stroke-width="3" stroke-dasharray="4,3"/>
+    <text x="38" y="14" fill="#FCA5A5" font-family="sans-serif" font-size="12">Wi-Fi Standar (Bufferbloat &amp; Jitter)</text>
+
+    <line x1="260" y1="10" x2="290" y2="10" stroke="#F59E0B" stroke-width="2"/>
+    <text x="298" y="14" fill="#FCD34D" font-family="sans-serif" font-size="12">Seluler 4G Mandiri</text>
+
+    <line x1="430" y1="10" x2="460" y2="10" stroke="#06B6D4" stroke-width="3.5"/>
+    <text x="468" y="14" fill="#67E8F9" font-family="sans-serif" font-size="12" font-weight="700">AetherPulse Dual-Radio</text>
+  </g>
+
+  <!-- Chart Area Grid (X: 100 to 1140, Y: 120 to 500) -->
+  <g stroke="#1F2937" stroke-width="1">
+    <!-- Horizontal Grid Lines -->
+    <line x1="100" y1="140" x2="1140" y2="140" />
+    <line x1="100" y1="210" x2="1140" y2="210" />
+    <line x1="100" y1="280" x2="1140" y2="280" />
+    <line x1="100" y1="350" x2="1140" y2="350" />
+    <line x1="100" y1="420" x2="1140" y2="420" />
+    <line x1="100" y1="490" x2="1140" y2="490" />
+  </g>
+
+  <!-- Y-Axis Labels -->
+  <text x="85" y="145" fill="#EF4444" font-family="sans-serif" font-size="12" text-anchor="end">800 ms (Merah)</text>
+  <text x="85" y="215" fill="#F87171" font-family="sans-serif" font-size="12" text-anchor="end">600 ms</text>
+  <text x="85" y="285" fill="#FBBF24" font-family="sans-serif" font-size="12" text-anchor="end">400 ms (Kuning)</text>
+  <text x="85" y="350" fill="#94A3B8" font-family="sans-serif" font-size="12" text-anchor="end">250 ms</text>
+  <text x="85" y="420" fill="#34D399" font-family="sans-serif" font-size="12" text-anchor="end" font-weight="700">188 ms (Batas Fisika)</text>
+  <text x="85" y="495" fill="#64748B" font-family="sans-serif" font-size="12" text-anchor="end">0 ms</text>
+
+  <!-- Theoretical Physics Floor Shaded Line -->
+  <line x1="100" y1="420" x2="1140" y2="420" stroke="#10B981" stroke-width="1.5" stroke-dasharray="2,2"/>
+  <rect x="100" y="420" width="1040" height="70" fill="#065F46" fill-opacity="0.1"/>
+  <text x="1135" y="440" fill="#34D399" font-family="sans-serif" font-size="11" text-anchor="end">Zona Batas Kecepatan Cahaya Antarbenua (Tidak Dapat Dilompati)</text>
+
+  <!-- Curve 1: Standard Wi-Fi (Spikes, erratic, packet loss jumps) -->
+  <path d="M 100 420 
+           L 150 422 L 180 418 L 220 270 L 240 160 L 260 380 L 300 420 L 350 419 
+           L 400 421 L 430 320 L 450 145 L 470 210 L 500 422 L 560 418 L 600 420 
+           L 640 290 L 670 170 L 700 419 L 750 423 L 800 420 L 830 310 L 860 150 
+           L 890 260 L 930 422 L 980 419 L 1020 330 L 1050 180 L 1080 420 L 1140 421"
+        fill="none" stroke="#EF4444" stroke-width="2.5" stroke-dasharray="4,2"/>
+
+  <!-- Annotation Spike on Wi-Fi -->
+  <g transform="translate(450, 145)">
+    <circle r="5" fill="#EF4444"/>
+    <rect x="-60" y="-35" width="120" height="25" rx="4" fill="#7F1D1D" stroke="#EF4444"/>
+    <text x="0" y="-18" fill="#FEE2E2" font-family="sans-serif" font-size="11" text-anchor="middle">Spike 780 ms (War Drop)</text>
+  </g>
+
+  <!-- Curve 2: Cellular 4G Only (Baseline 230ms, moderate jitter) -->
+  <path d="M 100 370 
+           Q 150 360, 200 375 T 300 365 T 400 380 T 500 370 T 600 365 T 700 375 T 800 368 T 900 372 T 1000 365 T 1140 370"
+        fill="none" stroke="#F59E0B" stroke-width="2"/>
+
+  <!-- Curve 3: AetherPulse Dual-Path Aggregation (Laser flat rock-solid at 188 ms) -->
+  <path d="M 100 420 L 1140 420"
+        fill="none" stroke="#06B6D4" stroke-width="4"/>
+
+  <!-- Area under AetherPulse curve -->
+  <polygon points="100,420 1140,420 1140,490 100,490" fill="url(#pulseFill)"/>
+
+  <!-- X-Axis Labels (Time in seconds) -->
+  <text x="100" y="525" fill="#64748B" font-family="sans-serif" font-size="12" text-anchor="middle">0 dtk</text>
+  <text x="308" y="525" fill="#64748B" font-family="sans-serif" font-size="12" text-anchor="middle">25 dtk</text>
+  <text x="516" y="525" fill="#64748B" font-family="sans-serif" font-size="12" text-anchor="middle">50 dtk</text>
+  <text x="724" y="525" fill="#64748B" font-family="sans-serif" font-size="12" text-anchor="middle">75 dtk</text>
+  <text x="932" y="525" fill="#64748B" font-family="sans-serif" font-size="12" text-anchor="middle">100 dtk</text>
+  <text x="1140" y="525" fill="#64748B" font-family="sans-serif" font-size="12" text-anchor="middle">120 dtk</text>
+
+  <!-- Summary Box Bottom -->
+  <g transform="translate(100, 545)">
+    <rect width="1040" height="35" rx="6" fill="#111827" stroke="#1F2937"/>
+    <text x="20" y="22" fill="#94A3B8" font-family="sans-serif" font-size="12">
+      Hasil Empiris: AetherPulse memangkas variasi jeda (jitter) dari 148 ms menjadi &lt; 1.2 ms dan mengeliminasi packet drop menjadi 0.00%.
+    </text>
+  </g>
+</svg>

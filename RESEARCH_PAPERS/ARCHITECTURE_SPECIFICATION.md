@@ -1,6 +1,6 @@
-# Spesifikasi Arsitektur Sistem Stabilisator Jaringan BridgePlay
+# Spesifikasi Arsitektur Sistem Stabilisator Jaringan AetherPulse
 
-Penulis: Divisi Rekayasa Protokol BridgePlay  
+Penulis: Divisi Rekayasa Protokol AetherPulse  
 Target Sistem: Android Client (Samsung A53) dan Linux Edge Relay  
 Status: Spesifikasi Standar Implementasi  
 
@@ -8,75 +8,11 @@ Status: Spesifikasi Standar Implementasi
 
 ## 1. Topologi dan Alur Data End to End
 
-Sistem BridgePlay dirancang khusus untuk mengatasi ketidakstabilan transmisi nirkabel dan rute interkontinental jarak jauh. Topologi sistem terdiri dari dua komponen utama:
-1. BridgePlay Android Client: Berjalan sebagai layanan latar belakang VpnService pada ponsel pintar Android pengguna.
-2. BridgePlay Edge Relay Server: Berjalan pada peladen virtual (VPS) berlokasi strategis di kawasan Eropa Utara (Helsinki, Finlandia) yang memiliki peering langsung ke pusat data game.
+Sistem AetherPulse dirancang khusus untuk mengatasi ketidakstabilan transmisi nirkabel dan rute interkontinental jarak jauh. Topologi sistem terdiri dari dua komponen utama:
+1. AetherPulse Android Client: Berjalan sebagai layanan latar belakang VpnService pada ponsel pintar Android pengguna.
+2. AetherPulse Edge Relay Server: Berjalan pada peladen virtual (VPS) berlokasi strategis di kawasan Eropa Utara (Helsinki, Finlandia) yang memiliki peering langsung ke pusat data game.
 
-```
-+-------------------------------------------------------------------+
-|               Ponsel Pintar Android (Samsung A53)                |
-|                                                                   |
-|   +-----------------------+     +-----------------------------+   |
-|   | Game Mobile Legends   |     | Layanan Sistem Lainnya      |   |
-|   +-----------+-----------+     +--------------+--------------+   |
-|               | (Paket UDP Game)               |                  |
-|               v                                v                  |
-|   +--------------------------------------------+--------------+   |
-|   |          Android VpnService Virtual TUN Interface         |   |
-|   |         (Pemisahan Jalur Berdasarkan Port & IP)           |   |
-|   +---------------------------+-------------------------------+   |
-|                               |                                   |
-|                               v                                   |
-|   +-----------------------------------------------------------+   |
-|   |             Mesin Duplikasi Paket Jalur Ganda             |   |
-|   |             (Multipath Packet Duplicator Engine)          |   |
-|   +-------------+-------------------------------+-------------+   |
-|                 | (Paket Salinan A)             | (Salinan B)     |
-|                 v                               v                 |
-|   +---------------------------+   +---------------------------+   |
-|   | Socket A: Radio Wi Fi     |   | Socket B: Radio Seluler   |   |
-|   | Interface wlan0           |   | Interface rmnet0 (4G LTE) |   |
-|   +-------------+-------------+   +-------------+-------------+   |
-+-----------------|-------------------------------|-----------------+
-                  |                               |
-        Jalur 1: Gelombang Wi Fi        Jalur 2: Menara BTS Seluler
-                  |                               |
-                  v                               v
-    +---------------------------+   +---------------------------+
-    | Router Rumah & Fiber Optik|   | Jaringan Inti Operator 4G |
-    +-------------+-------------+   +-------------+-------------+
-                  |                               |
-                  +---------------+---------------+
-                                  |
-               Kabel Bawah Laut Antarbenua (15.900 km)
-                                  |
-                                  v
-+-------------------------------------------------------------------+
-|            BridgePlay Edge Relay Server (Helsinki, Finlandia)     |
-|                                                                   |
-|   +-----------------------------------------------------------+   |
-|   |                Penerima Multi Port UDP                    |   |
-|   +-----------------------------+-----------------------------+   |
-|                                 |                                 |
-|                                 v                                 |
-|   +-----------------------------------------------------------+   |
-|   |          Penyaring Deduplikasi Sliding Window O(1)        |   |
-|   |     (Paket Tercepat Diterima, Paket Terlambat Dibuang)    |   |
-|   +-----------------------------+-----------------------------+   |
-|                                 |                                 |
-|                                 v                                 |
-|   +-----------------------------------------------------------+   |
-|   |         Penerusan Raw Socket Langsung ke Server Game      |   |
-|   +-----------------------------+-----------------------------+   |
-+---------------------------------|---------------------------------+
-                                  |
-                        Jaringan Lokal Eropa (<2 ms)
-                                  |
-                                  v
-                    +---------------------------+
-                    | Peladen Game Resmi Eropa  |
-                    +---------------------------+
-```
+![Diagram Alur Arsitektur AetherPulse](../docs/assets/multipath_architecture_flowchart.svg)
 
 ---
 
@@ -84,41 +20,26 @@ Sistem BridgePlay dirancang khusus untuk mengatasi ketidakstabilan transmisi nir
 
 ### 2.1 Konsep Teoretis Pengurangan Jitter Menuju Nol
 
-Secara umum, koneksi internet Wi Fi rumahan memiliki latensi rata rata yang baik, namun sering mengalami lonjakan mendadak akibat gangguan gelombang radio lokal. Di sisi lain, koneksi seluler 4G LTE memiliki latensi dasar yang sedikit lebih tinggi namun tidak terpengaruh oleh kontensi router lokal rumah.
+Secara umum, koneksi internet Wi-Fi rumahan memiliki latensi rata-rata yang baik, namun sering mengalami lonjakan mendadak akibat gangguan gelombang radio lokal. Di sisi lain, koneksi seluler 4G LTE memiliki latensi dasar yang sedikit lebih tinggi namun tidak terpengaruh oleh kontensi router lokal rumah.
 
-Jika latensi Wi Fi pada waktu t dinyatakan dengan L wifi(t) dan latensi 4G dinyatakan dengan L cell(t), maka paket yang dikirimkan secara serentak ke dua jalur fisik berbeda akan tiba di peladen tujuan pada waktu:
+Jika latensi Wi-Fi pada waktu t dinyatakan dengan L wifi(t) dan latensi 4G dinyatakan dengan L cell(t), maka paket yang dikirimkan secara serentak ke dua jalur fisik berbeda akan tiba di peladen tujuan pada waktu:
 
 L efektif(t) = Minimum( L wifi(t), L cell(t) )
 
-Korelasi matematis probabilitas kehilangan paket (packet loss) juga menurun secara eksponensial. Jika probabilitas kehilangan paket pada Wi Fi adalah P(W) = 3 persen dan pada seluler adalah P(C) = 2 persen, maka probabilitas kedua salinan paket hilang secara bersamaan adalah:
+Korelasi matematis probabilitas kehilangan paket (packet loss) juga menurun secara eksponensial. Jika probabilitas kehilangan paket pada Wi-Fi adalah P(W) = 3 persen dan pada seluler adalah P(C) = 2 persen, maka probabilitas kedua salinan paket hilang secara bersamaan adalah:
 
-P gabungan = P(W) x P(C) = 0.03 x 0.02 = 0.0006 (0.06 persen)
+P gabungan = P(W) × P(C) = 0.03 × 0.02 = 0.0006 (0.06 persen)
 
 Tingkat keandalan jaringan meningkat dari 97 persen menjadi 99.94 persen tanpa perlu melakukan transmisi ulang.
 
-### 2.2 Format Header Protokol BridgePlay
+![Grafik Telemetri Latensi dan Kestabilan](../docs/assets/latency_stability_chart.svg)
 
-Setiap paket UDP dari game dienkapsulasi ke dalam header ringkas BridgePlay berukuran 8 byte untuk menjaga efisiensi transmisi:
+### 2.2 Format Header Protokol AetherPulse
 
-```
- 0                   1                   2                   3
- 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|       Tanda Pengenal Protokol (0x4250 / "BP")                 |
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-| Jenis Paket   | Tanda Bendera |          Panjang Data         |
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|                 Nomor Urut Paket (Sequence Number 32 bit)     |
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|                   Muatan Data Asli Game (Payload)             |
-|                                ...                            |
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-```
-
-Struktur bidang:
-* Tanda Pengenal Protokol (16 bit): Nilai tetap 0x4250 untuk validasi integritas paket.
+Setiap paket UDP dari game dienkapsulasi ke dalam header ringkas AetherPulse berukuran 10 byte untuk menjaga efisiensi transmisi:
+* Tanda Pengenal Protokol (16 bit): Nilai tetap 0x4250 ("BP" / BridgePulse) untuk validasi integritas paket.
 * Jenis Paket (8 bit): 0x01 untuk Paket Data, 0x02 untuk Paket Paritas FEC, 0x03 untuk Paket Heartbeat Keepalive.
-* Tanda Bendera (8 bit): Menyimpan metadata jalur (Bit 0: Jalur Wi Fi, Bit 1: Jalur Seluler).
+* Tanda Bendera (8 bit): Menyimpan metadata jalur (Bit 0: Jalur Wi-Fi, Bit 1: Jalur Seluler).
 * Panjang Data (16 bit): Ukuran muatan data asli dalam satuan byte.
 * Nomor Urut Paket (32 bit): Angka urut unik inkremental untuk mendeteksi paket duplikat pada peladen penerima.
 
@@ -131,18 +52,18 @@ Peladen Edge Relay di Helsinki menerima paket dari dua jalur jaringan secara aca
 ### 3.1 Logika Operasi Sliding Window Bitmask
 
 Peladen mempertahankan dua variabel status untuk setiap sesi aktif:
-1. `max_seq_received`: Nomor urut tertinggi yang pernah berhasil diterima.
-2. `window_mask`: Angka biner 64 bit (uint64) yang melacak status kedatangan 64 nomor urut terakhir sebelum `max_seq_received`.
+1. max_seq_received: Nomor urut tertinggi yang pernah berhasil diterima.
+2. window_mask: Angka biner 64 bit (uint64) yang melacak status kedatangan 64 nomor urut terakhir sebelum max_seq_received.
 
-Aturan penerimaan paket dengan nomor urut `seq`:
-* Kasus A (Paket Lebih Baru): Jika `seq > max_seq_received`, hitung selisih jeda `diff = seq - max_seq_received`.
-  * Geser bitmask ke kiri sebanyak `diff` posisi.
+Aturan penerimaan paket dengan nomor urut seq:
+* Kasus A (Paket Lebih Baru): Jika seq > max_seq_received, hitung selisih jeda diff = seq - max_seq_received.
+  * Geser bitmask ke kiri sebanyak diff posisi.
   * Pasang bit 0 pada posisi paling rendah (menandakan nomor urut ini baru saja diterima).
-  * Perbarui `max_seq_received = seq`.
+  * Perbarui max_seq_received = seq.
   * Teruskan paket langsung ke server game.
-* Kasus B (Paket Duplikat atau Paket Lampau): Jika `seq <= max_seq_received`, hitung selisih `diff = max_seq_received - seq`.
-  * Jika `diff >= 64`, paket sudah terlalu usang di luar jendela pantau, buang paket.
-  * Jika `diff < 64`, periksa status bit ke `diff` pada `window_mask`.
+* Kasus B (Paket Duplikat atau Paket Lampau): Jika seq <= max_seq_received, hitung selisih diff = max_seq_received - seq.
+  * Jika diff >= 64, paket sudah terlalu usang di luar jendela pantau, buang paket.
+  * Jika diff < 64, periksa status bit ke diff pada window_mask.
     * Jika bit bernilai 1, paket ini sudah pernah diproses sebelumnya (salinan duplikat yang datang terlambat), segera buang paket.
     * Jika bit bernilai 0, ubah bit menjadi 1 dan teruskan paket (paket datang terlambat namun belum pernah diproses).
 
@@ -152,7 +73,7 @@ Pendekatan ini beroperasi murni pada register CPU tanpa alokasi memori dinamis d
 
 ## 4. Mekanisme Forward Error Correction (FEC) Instan
 
-Jika kedua jalur transmisi nirkabel maupun kabel bawah laut mengalami gangguan serentak pada satu frame tertentu, protokol FEC BridgePlay merekonstruksi paket yang hilang tanpa perlu meminta pengiriman ulang (retransmission request).
+Jika kedua jalur transmisi nirkabel maupun kabel bawah laut mengalami gangguan serentak pada satu frame tertentu, protokol FEC AetherPulse merekonstruksi paket yang hilang tanpa perlu meminta pengiriman ulang (retransmission request).
 
 ### 4.1 Skema Paritas Sliding Block XOR
 
@@ -174,37 +95,37 @@ Keuntungan utama:
 
 ## 5. Optimalisasi Tingkat Kernel dan Hardware pada Samsung Galaxy A53
 
-Ponsel pintar Samsung Galaxy A53 ditenagai oleh prosesor Samsung Exynos 1280 dengan modem 5G dan modul Wi Fi terintegrasi. Untuk memaksimalkan performa latensi, aplikasi BridgePlay menerapkan serangkaian konfigurasi tingkat sistem:
+Ponsel pintar Samsung Galaxy A53 ditenagai oleh prosesor Samsung Exynos 1280 dengan modem 5G dan modul Wi-Fi terintegrasi. Untuk memaksimalkan performa latensi, aplikasi AetherPulse menerapkan serangkaian konfigurasi tingkat sistem:
 
-### 5.1 Penguncian Mode Latensi Rendah Wi Fi (Full Low Latency Lock)
+### 5.1 Penguncian Mode Latensi Rendah Wi-Fi (Full Low Latency Lock)
 
-Secara default, Android mengizinkan modul Wi Fi masuk ke mode hemat daya setelah beberapa detik tidak ada lonjakan data unduhan masif. Aplikasi BridgePlay mengaktifkan pengunci khusus melalui Android WifiManager API:
+Secara default, Android mengizinkan modul Wi-Fi masuk ke mode hemat daya setelah beberapa detik tidak ada lonjakan data unduhan masif. Aplikasi AetherPulse mengaktifkan pengunci khusus melalui Android WifiManager API:
 
 ```kotlin
 val wifiManager = applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
 val wifiLock = wifiManager.createWifiLock(
     WifiManager.WIFI_MODE_FULL_LOW_LATENCY,
-    "BridgePlay:LowLatencyMode"
+    "AetherPulse:LowLatencyMode"
 )
 wifiLock.acquire()
 ```
 
 Dampak langsung penguncian ini:
 * Menonaktifkan mekanisme 802.11 Power Save Polling pada antarmuka wlan0.
-* Mengurangi jeda internal modul nirkabel dari rata rata 25 milidetik menjadi kurang dari 3 milidetik.
+* Mengurangi jeda internal modul nirkabel dari rata-rata 25 milidetik menjadi kurang dari 3 milidetik.
 
-### 5.2 Penandaan Paket DSCP untuk Prioritas Wi Fi WMM Voice Queue
+### 5.2 Penandaan Paket DSCP untuk Prioritas Wi-Fi WMM Voice Queue
 
-Router Wi Fi modern mendukung standar Wi Fi Multimedia (IEEE 802.11e WMM) yang membagi lalu lintas udara menjadi empat antrean prioritas:
+Router Wi-Fi modern mendukung standar Wi-Fi Multimedia (IEEE 802.11e WMM) yang membagi lalu lintas udara menjadi empat antrean prioritas:
 1. AC_VO (Voice): Prioritas tertinggi, waktu tunggu transmisi udara paling singkat.
 2. AC_VI (Video): Prioritas menengah tinggi.
 3. AC_BE (Best Effort): Prioritas standar (seluruh lalu lintas web biasa).
 4. AC_BK (Background): Prioritas terendah (unduhan latar belakang).
 
-BridgePlay menandai seluruh soket pengiriman UDP dengan byte Differentiated Services Code Point (DSCP) bernilai 46 (0x2E), yang dalam format byte ToS bernilai 0xB8 (Expedited Forwarding).
-* Nilai ini secara otomatis dipetakan oleh firmware chipset Wi Fi dan router rumah ke antrean tertinggi AC_VO.
+AetherPulse menandai seluruh soket pengiriman UDP dengan byte Differentiated Services Code Point (DSCP) bernilai 46 (0x2E), yang dalam format byte ToS bernilai 0xB8 (Expedited Forwarding).
+* Nilai ini secara otomatis dipetakan oleh firmware chipset Wi-Fi dan router rumah ke antrean tertinggi AC_VO.
 * Paket game secara instan melompati seluruh antrean perangkat lain di rumah yang sedang menonton YouTube atau mengunduh berkas, sepenuhnya melenyapkan fenomena bufferbloat lokal.
 
 ### 5.3 Pemisahan Jalur Berdasarkan Port Aplikasi (Selective Split Tunneling)
 
-Hanya paket UDP yang berkaitan dengan lalu lintas game (rentang port UDP 5000 hingga 6500 dan port 30000 hingga 30200 yang umum digunakan oleh Mobile Legends) yang akan digandakan ke jalur seluler dan Wi Fi. Lalu lintas aplikasi lain seperti pesan instan, unduhan berkas, dan layanan perbankan tetap dialihkan langsung melalui koneksi internet standar tanpa melewati jalur enkapsulasi untuk menghemat pemakaian kuota data seluler.
+Hanya paket UDP yang berkaitan dengan lalu lintas game (rentang port UDP 5000 hingga 6500 dan port 30000 hingga 30200 yang umum digunakan oleh Mobile Legends) yang akan digandakan ke jalur seluler dan Wi-Fi. Lalu lintas aplikasi lain seperti pesan instan, unduhan berkas, dan layanan perbankan tetap dialihkan langsung melalui koneksi internet standar tanpa melewati jalur enkapsulasi untuk menghemat pemakaian kuota data seluler.

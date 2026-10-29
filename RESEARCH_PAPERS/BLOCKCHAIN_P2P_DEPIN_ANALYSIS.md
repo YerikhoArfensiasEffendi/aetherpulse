@@ -1,6 +1,6 @@
 # Riset Komprehensif: Penerapan Peer to Peer dan Blockchain dalam Penstabil Jaringan Game
 
-Penulis: Divisi Riset Sistem Terdesentralisasi BridgePlay  
+Penulis: Divisi Riset Sistem Terdesentralisasi AetherPulse  
 Klasifikasi: Dokumen Penelitian dan Analisis Arsitektur DePIN  
 
 ---
@@ -24,6 +24,8 @@ Peran nyata blockchain di sini adalah sebagai:
 Data game bergerak di luar rantai blok (off-chain) melalui protokol Peer to Peer murni, seperti libp2p, Kademlia Distributed Hash Table (DHT), dan UDP Hole Punching.
 * Komunikasi berlangsung langsung dari titik ke titik antara ponsel pintar dengan node perantara tercepat.
 * Blockchain hanya bertindak sebagai pengawas transaksi pembayaran mikro dan reputasi kualitas layanan (Quality of Service) dari node tersebut.
+
+![Diagram Alur DePIN dan Pembayaran Mikro](../docs/assets/depin_settlement_flowchart.svg)
 
 ---
 
@@ -56,7 +58,7 @@ Saat ini, penyedia VPN komersial atau game booster mewajibkan langganan bulanan 
 * Ponsel pengguna menandatangani tanda terima kriptografis setiap 1 Megabyte data selesai ditransmisikan. Biaya per pertandingan dapat ditekan menjadi sekitar 100 hingga 200 Rupiah saja, langsung mengalir ke pemilik node relai di Finlandia tanpa perantara perusahaan raksasa.
 
 ### Inovasi 2: Rute Anycast Terdesentralisasi yang Tahan Pemadaman Kabel (BGP Bypass Mesh)
-Kabel bawah laut kerap mengalami gangguan fisik (seperti putus terkena jangkar kapal atau gempa tektonik dasar laut). Ketika jalur kabel utama putus, penyedia internet (ISP) lokal membutuhkan waktu berjam jam atau berhari hari untuk mengonfigurasi ulang rute BGP mereka, menyebabkan ping game tiba-tiba melonjak tinggi.
+Kabel bawah laut kerap mengalami gangguan fisik (seperti putus terkena jangkar kapal atau gempa tektonik dasar laut). Ketika jalur kabel utama putus, penyedia internet (ISP) lokal membutuhkan waktu berjam-jam atau berhari-hari untuk mengonfigurasi ulang rute BGP mereka, menyebabkan ping game tiba-tiba melonjak tinggi.
 * Melalui protokol P2P Mesh yang terdesentralisasi, simpul klien dapat memantau ribuan jalur transmisi alternatif secara real time.
 * Jika jalur laut Hindia mengalami degradasi, algoritma perutean cerdas pada ponsel dapat membelah paket duplikat melalui jalur kabel Pasifik (melalui stasiun relai di Jepang atau Amerika) secara otomatis tanpa menunggu keputusan operator ISP.
 
@@ -66,7 +68,7 @@ Dalam jaringan terdesentralisasi, bagaimana kita memastikan bahwa node relai di 
 * Setiap paket data game yang melewati simpul perantara diberi stempel waktu mikrodetik dan tanda tangan kriptografis berbasis kunci publik privat yang divalidasi oleh perangkat keras tepercaya (Trusted Execution Environment / TEE).
 * Simpul yang secara konsisten mempertahankan ping di bawah 190 milidetik ke pusat data game Finlandia akan mendapatkan skor reputasi on-chain tertinggi dan diprioritaskan oleh aplikasi klien.
 
-### Inovasi 4: Pembukaan Jalur Nat Terdesentralisasi (Decentralized STUN/TURN via DHT)
+### Inovasi 4: Pembukaan Jalur NAT Terdesentralisasi (Decentralized STUN/TURN via DHT)
 Saat ini, pemain game yang berada di balik NAT simetris (Carrier-Grade NAT / CGNAT yang diterapkan oleh operator seluler seperti Telkomsel, Indosat, atau XL) kerap mengalami kesulitan mendirikan koneksi UDP langsung.
 * Dengan memanfaatkan Kademlia Distributed Hash Table (DHT), jaringan P2P dapat bertindak sebagai direktori pemetaan soket global yang terdesentralisasi.
 * Ponsel Samsung A53 dapat menemukan jalur tembus NAT secara instan tanpa perlu bergantung pada peladen STUN/TURN terpusat yang rawan pemblokiran.
@@ -91,7 +93,7 @@ Untuk memahami posisi riset ini dalam peta industri global, berikut adalah perba
 2. Marlin Protocol (Oyster and Flashbots Relay)
 * Fokus: Lapisan jaringan berlatensi sangat rendah untuk transmisi data transaksi blockchain dan komputasi edge.
 * Kelebihan: Mengoptimalkan antrean kernel, menggunakan transmisi UDP yang dipercepat, dan memprioritaskan latensi di bawah 100 milidetik antar pusat data.
-* Relevansi: Arsitektur Marlin adalah model yang paling dekat dan paling cocok untuk diadopsi ke dalam sistem stabilisator game BridgePlay.
+* Relevansi: Arsitektur Marlin adalah model yang paling dekat dan paling cocok untuk diadopsi ke dalam sistem stabilisator game AetherPulse.
 
 3. Mysterium Network dan Sentinel
 * Fokus: Jaringan VPN terdesentralisasi (dVPN).
@@ -99,7 +101,7 @@ Untuk memahami posisi riset ini dalam peta industri global, berikut adalah perba
 
 ---
 
-## 5. Kesimpulan dan Peta Jalan Implementasi BridgePlay
+## 5. Kesimpulan dan Peta Jalan Implementasi AetherPulse
 
 Menggabungkan P2P dan Blockchain tidak dapat mengubah hukum fisika perambatan cahaya di kabel laut, namun dapat menghasilkan sistem ekonomi jaringan yang sangat efisien:
 1. Menghilangkan biaya langganan bulanan yang mahal dengan menggantinya menjadi sistem pembayaran mikro per pertandingan.
