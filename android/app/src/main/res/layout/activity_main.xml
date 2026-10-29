@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="24dp"
+    android:background="#0F172A">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="BridgePlay Network Stabilizer"
+        android:textColor="#F8FAFC"
+        android:textSize="22sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="Multipath Dual Radio Aggregation for Samsung A53"
+        android:textColor="#94A3B8"
+        android:textSize="13sp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+        android:background="#334155" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Server Relay Alamat IP (Finlandia / Helsinki)"
+        android:textColor="#CBD5E1"
+        android:textSize="14sp" />
+
+    <EditText
+        android:id="@+id/etServerIp"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="8dp"
+        android:background="#1E293B"
+        android:hint="Contoh: 95.217.18.20"
+        android:inputType="textUri"
+        android:padding="12dp"
+        android:textColor="#F8FAFC"
+        android:textColorHint="#64748B" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Port UDP Relay"
+        android:textColor="#CBD5E1"
+        android:textSize="14sp" />
+
+    <EditText
+        android:id="@+id/etServerPort"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="8dp"
+        android:background="#1E293B"
+        android:hint="8910"
+        android:inputType="number"
+        android:padding="12dp"
+        android:text="8910"
+        android:textColor="#F8FAFC"
+        android:textColorHint="#64748B" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:background="#1E293B"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Status Jalur Ganda (Dual Radio)"
+            android:textColor="#94A3B8"
+            android:textSize="13sp" />
+
+        <TextView
+            android:id="@+id/tvStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:text="Status: Tidak Aktif"
+            android:textColor="#F1F5F9"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tvDetails"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="Wi-Fi: Siap | Seluler 4G: Siap | DSCP: AC_VO"
+            android:textColor="#38BDF8"
+            android:textSize="12sp" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btnToggle"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_marginTop="32dp"
+        android:backgroundTint="#0284C7"
+        android:text="Aktifkan Penstabil Jaringan"
+        android:textColor="#FFFFFF"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+</LinearLayout>

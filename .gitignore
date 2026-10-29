@@ -1,0 +1,24 @@
+# Compiled class file
+*.class
+
+# Log file
+*.log
+
+# Android Studio / Gradle
+.gradle/
+build/
+app/build/
+.idea/
+*.iml
+local.properties
+.DS_Store
+
+# Python
+__pycache__/
+*.py[cod]
+venv/
+.env
+
+# Go
+bin/
+*.exe
